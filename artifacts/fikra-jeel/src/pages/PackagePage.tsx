@@ -1,6 +1,6 @@
 import { Link, useParams } from "wouter";
 import { motion } from "framer-motion";
-import { Zap, AlertTriangle, ChevronRight } from "lucide-react";
+import { AlertTriangle, ChevronRight } from "lucide-react";
 import Layout from "@/components/Layout";
 import {
   Table,
@@ -18,11 +18,12 @@ interface PackageData {
   firstPayment: number;
   monthlyPayment: number;
   description: string;
-  buyLink: string; // TODO: Replace with actual store link
+  buyLink: string;       // TODO: Replace with actual store link
   whatsappNumber: string; // TODO: Replace with actual WhatsApp number
+  image: string;         // TODO: Replace with actual product image URL
 }
 
-// TODO: Update these package details, links, and WhatsApp numbers as needed
+// TODO: Update package details, images, links, and WhatsApp numbers as needed
 const packagesData: Record<string, PackageData> = {
   "750": {
     name: "باقة 750",
@@ -31,8 +32,10 @@ const packagesData: Record<string, PackageData> = {
     firstPayment: 200,
     monthlyPayment: 183,
     description: "باقة مثالية للبداية، تشمل إكسسوارات أساسية عالية الجودة لجوالك.",
-    buyLink: "https://example.com/buy/750", // TODO: Replace with actual store link
-    whatsappNumber: "966500000000", // TODO: Replace with actual WhatsApp number
+    buyLink: "https://example.com/buy/750",   // TODO: Replace with actual store link
+    whatsappNumber: "966500000000",            // TODO: Replace with actual WhatsApp number
+    // TODO: Replace with your actual product image for باقة 750
+    image: "https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=900&q=85&fit=crop",
   },
   "1050": {
     name: "باقة 1050",
@@ -41,8 +44,10 @@ const packagesData: Record<string, PackageData> = {
     firstPayment: 280,
     monthlyPayment: 257,
     description: "باقة متوازنة توفر لك مجموعة متكاملة من إكسسوارات الجوال اليومية.",
-    buyLink: "https://example.com/buy/1050", // TODO: Replace with actual store link
-    whatsappNumber: "966500000000", // TODO: Replace with actual WhatsApp number
+    buyLink: "https://example.com/buy/1050",  // TODO: Replace with actual store link
+    whatsappNumber: "966500000000",            // TODO: Replace with actual WhatsApp number
+    // TODO: Replace with your actual product image for باقة 1050
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=900&q=85&fit=crop",
   },
   "1500": {
     name: "باقة 1500",
@@ -51,8 +56,10 @@ const packagesData: Record<string, PackageData> = {
     firstPayment: 400,
     monthlyPayment: 367,
     description: "باقة متميزة تجمع بين الجودة العالية والتنوع في الإكسسوارات.",
-    buyLink: "https://example.com/buy/1500", // TODO: Replace with actual store link
-    whatsappNumber: "966500000000", // TODO: Replace with actual WhatsApp number
+    buyLink: "https://example.com/buy/1500",  // TODO: Replace with actual store link
+    whatsappNumber: "966500000000",            // TODO: Replace with actual WhatsApp number
+    // TODO: Replace with your actual product image for باقة 1500
+    image: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=900&q=85&fit=crop",
   },
   "2200": {
     name: "باقة 2200",
@@ -61,25 +68,19 @@ const packagesData: Record<string, PackageData> = {
     firstPayment: 580,
     monthlyPayment: 540,
     description: "الباقة الشاملة المميزة للحصول على أفضل إكسسوارات بأعلى جودة.",
-    buyLink: "https://example.com/buy/2200", // TODO: Replace with actual store link
-    whatsappNumber: "966500000000", // TODO: Replace with actual WhatsApp number
+    buyLink: "https://example.com/buy/2200",  // TODO: Replace with actual store link
+    whatsappNumber: "966500000000",            // TODO: Replace with actual WhatsApp number
+    // TODO: Replace with your actual product image for باقة 2200
+    image: "https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=900&q=85&fit=crop",
   },
 };
 
-// All packages for the installment comparison table
 const allPackages = [
   { id: "750",  name: "باقة 750",  firstPayment: 200, monthlyPayment: 183, liquid: 600  },
   { id: "1050", name: "باقة 1050", firstPayment: 280, monthlyPayment: 257, liquid: 850  },
   { id: "1500", name: "باقة 1500", firstPayment: 400, monthlyPayment: 367, liquid: 1200 },
   { id: "2200", name: "باقة 2200", firstPayment: 580, monthlyPayment: 540, liquid: 1750 },
 ];
-
-const packageGradients: Record<string, string> = {
-  "750":  "from-blue-500 to-blue-700",
-  "1050": "from-blue-600 to-indigo-700",
-  "1500": "from-indigo-500 to-blue-800",
-  "2200": "from-blue-700 to-slate-800",
-};
 
 export default function PackagePage() {
   const { id } = useParams<{ id: string }>();
@@ -88,7 +89,7 @@ export default function PackagePage() {
   if (!pkg) {
     return (
       <Layout>
-        <div className="min-h-[50vh] flex flex-col items-center justify-center gap-4 py-20">
+        <div className="min-h-[50vh] flex flex-col items-center justify-center gap-4 py-20 text-center">
           <h1 className="text-2xl font-black text-gray-900">الباقة غير موجودة</h1>
           <p className="text-gray-500">الباقة التي تبحث عنها غير متوفرة.</p>
           <Link href="/" className="text-blue-600 hover:underline font-bold">
@@ -99,13 +100,11 @@ export default function PackagePage() {
     );
   }
 
-  const gradient = packageGradients[id ?? "750"];
-
   return (
     <Layout>
       <div
         data-testid="package-page"
-        className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10"
+        className="w-[90%] max-w-[1100px] mx-auto py-10 md:py-14"
       >
         {/* Back link */}
         <div className="mb-8">
@@ -119,43 +118,46 @@ export default function PackagePage() {
           </Link>
         </div>
 
-        {/* Page Title */}
+        {/* Page Title — centered */}
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="text-3xl md:text-4xl lg:text-5xl font-black text-blue-600 mb-10"
+          className="text-3xl md:text-4xl lg:text-5xl font-black text-blue-600 mb-10 text-center"
         >
           {pkg.name}
         </motion.h1>
 
         {/* Two-column layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-          {/* Left: Product Visual */}
+          {/* Product image */}
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className={`bg-gradient-to-br ${gradient} rounded-3xl flex flex-col items-center justify-center p-10 h-72 md:h-80 shadow-lg`}
+            className="rounded-3xl overflow-hidden shadow-lg h-72 md:h-80 group"
           >
-            <Zap className="w-16 h-16 text-white/80 mb-4 fill-white/30" />
-            <h2 className="text-3xl font-black text-white mb-1">{pkg.name}</h2>
-            <p className="text-white/70 text-sm font-medium">إكسسوارات تقنية مختارة</p>
+            {/* TODO: Replace the image URL in packagesData above for each باقة */}
+            <img
+              src={pkg.image}
+              alt={pkg.name}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
           </motion.div>
 
-          {/* Right: Package Info */}
+          {/* Package info */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
             className="flex flex-col gap-5"
           >
-            <div>
+            <div className="text-center md:text-right">
               <h2 className="text-xl font-black text-gray-900 mb-2">{pkg.name}</h2>
               <p className="text-gray-500 text-sm leading-relaxed">{pkg.description}</p>
             </div>
 
-            {/* Summary Card */}
+            {/* Summary card */}
             <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 space-y-3">
               <div className="flex justify-between items-center pb-3 border-b border-blue-100">
                 <span className="text-gray-600 text-sm font-semibold">إجمالي مبلغ الباقة</span>
@@ -183,6 +185,26 @@ export default function PackagePage() {
                 </span>
               </div>
             </div>
+
+            {/* Action buttons — visible on desktop inline with card info */}
+            <div className="hidden md:flex gap-4">
+              {/* TODO: Update buyLink in packagesData above */}
+              <button
+                onClick={() => window.open(pkg.buyLink, "_blank")}
+                data-testid="btn-buy-package"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-black py-3.5 px-6 rounded-2xl text-base transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+              >
+                شراء الباقة الآن
+              </button>
+              {/* TODO: Update whatsappNumber in packagesData above */}
+              <button
+                onClick={() => window.open(`https://wa.me/${pkg.whatsappNumber}`, "_blank")}
+                data-testid="btn-whatsapp"
+                className="flex-1 bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-black py-3.5 px-6 rounded-2xl text-base transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+              >
+                تواصل واتساب
+              </button>
+            </div>
           </motion.div>
         </div>
 
@@ -191,7 +213,7 @@ export default function PackagePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.25 }}
-          className="bg-gray-50 border-r-4 border-blue-500 rounded-xl p-5 mb-10"
+          className="bg-gray-50 border-r-4 border-blue-500 rounded-2xl p-5 mb-10"
         >
           <h3 className="font-bold text-gray-900 mb-1 text-base">طريقة الطلب</h3>
           <p className="text-gray-600 text-sm leading-relaxed">
@@ -207,7 +229,7 @@ export default function PackagePage() {
           transition={{ duration: 0.4, delay: 0.3 }}
           className="mb-6"
         >
-          <h3 className="text-xl font-black text-gray-900 mb-5">
+          <h3 className="text-xl font-black text-gray-900 mb-5 text-center">
             جدول التقسيط على 4 دفعات شهرية
           </h3>
 
@@ -280,7 +302,6 @@ export default function PackagePage() {
                       : "border-blue-100 shadow-sm"
                   }`}
                 >
-                  {/* Card title row */}
                   <div className="flex items-center gap-2 mb-4 pb-3 border-b border-blue-100">
                     <span className="text-lg font-black text-blue-600">{row.name}</span>
                     {isCurrentPackage && (
@@ -289,8 +310,6 @@ export default function PackagePage() {
                       </span>
                     )}
                   </div>
-
-                  {/* Card rows */}
                   <div className="space-y-3">
                     <div>
                       <p className="text-gray-500 text-sm mb-0.5">الدفعة الأولى والقسط الشهري</p>
@@ -330,18 +349,18 @@ export default function PackagePage() {
           </p>
         </motion.div>
 
-        {/* Action Buttons */}
+        {/* Action Buttons — full width, centered, visible on all screens */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.4 }}
-          className="flex flex-col sm:flex-row gap-4"
+          className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto"
         >
           {/* TODO: Update buyLink in packagesData above */}
           <button
             onClick={() => window.open(pkg.buyLink, "_blank")}
             data-testid="btn-buy-package"
-            className="flex-1 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-black py-4 px-8 rounded-2xl text-base transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+            className="flex-1 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-black py-4 px-8 rounded-2xl text-base transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 text-center"
           >
             شراء الباقة الآن
           </button>
@@ -350,7 +369,7 @@ export default function PackagePage() {
           <button
             onClick={() => window.open(`https://wa.me/${pkg.whatsappNumber}`, "_blank")}
             data-testid="btn-whatsapp"
-            className="flex-1 bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-black py-4 px-8 rounded-2xl text-base transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+            className="flex-1 bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-black py-4 px-8 rounded-2xl text-base transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 text-center"
           >
             تواصل واتساب
           </button>
