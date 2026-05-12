@@ -75,12 +75,6 @@ const packagesData: Record<string, PackageData> = {
   },
 };
 
-const allPackages = [
-  { id: "750",  name: "باقة 750",  firstPayment: 200, monthlyPayment: 183, liquid: 600  },
-  { id: "1050", name: "باقة 1050", firstPayment: 280, monthlyPayment: 257, liquid: 850  },
-  { id: "1500", name: "باقة 1500", firstPayment: 400, monthlyPayment: 367, liquid: 1200 },
-  { id: "2200", name: "باقة 2200", firstPayment: 580, monthlyPayment: 540, liquid: 1750 },
-];
 
 export default function PackagePage() {
   const { id } = useParams<{ id: string }>();
@@ -233,105 +227,71 @@ export default function PackagePage() {
             جدول التقسيط على 4 دفعات شهرية
           </h3>
 
-          {/* Desktop Table — hidden on mobile */}
+          {/* Desktop Table — single row for current package only, hidden on mobile */}
           <div className="hidden md:block overflow-x-auto rounded-2xl border border-gray-100 shadow-sm">
             <Table>
               <TableHeader>
                 <TableRow className="bg-blue-600 hover:bg-blue-600">
                   <TableHead className="text-white font-bold text-right py-4 px-5">
-                    الباقات المتوفرة
+                    الباقة المتوفرة
                   </TableHead>
                   <TableHead className="text-white font-bold text-right py-4 px-5">
                     الدفعة الأولى والقسط الشهري
                   </TableHead>
                   <TableHead className="text-white font-bold text-right py-4 px-5">
-                    المبلغ الصافي بعد خصم الرسوم
+                    المبلغ الصافي بعد خصم الرسوم وإعادة البيع والأتعاب
                   </TableHead>
                   <TableHead className="text-white font-bold text-right py-4 px-5">
-                    المبلغ النازل في حساب العميل
+                    المبلغ النازل في حساب العميل عند دفع الدفعة الأولى
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {allPackages.map((row) => {
-                  const isCurrentPackage = row.id === id;
-                  return (
-                    <TableRow
-                      key={row.id}
-                      className={
-                        isCurrentPackage
-                          ? "bg-blue-50 font-semibold border-blue-200"
-                          : "hover:bg-gray-50"
-                      }
-                    >
-                      <TableCell className="py-4 px-5 text-right font-bold text-gray-900">
-                        {row.name}
-                        {isCurrentPackage && (
-                          <span className="mr-2 text-xs bg-blue-600 text-white px-2 py-0.5 rounded-full">
-                            الباقة المختارة
-                          </span>
-                        )}
-                      </TableCell>
-                      <TableCell className="py-4 px-5 text-right text-gray-700 text-sm">
-                        دفعة أولى {row.firstPayment.toLocaleString("ar-SA")}ر + قسط{" "}
-                        {row.monthlyPayment.toLocaleString("ar-SA")}ر/شهر
-                      </TableCell>
-                      <TableCell className="py-4 px-5 text-right text-gray-700 font-semibold">
-                        {row.liquid.toLocaleString("ar-SA")} ريال
-                      </TableCell>
-                      <TableCell className="py-4 px-5 text-right text-gray-500 text-sm">
-                        يُحدد بعد الطلب
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                <TableRow className="bg-blue-50 font-semibold">
+                  <TableCell className="py-4 px-5 text-right font-bold text-blue-700">
+                    {pkg.name}
+                  </TableCell>
+                  <TableCell className="py-4 px-5 text-right text-gray-700 text-sm">
+                    دفعة أولى {pkg.firstPayment.toLocaleString("ar-SA")} ريال + قسط{" "}
+                    {pkg.monthlyPayment.toLocaleString("ar-SA")} ريال / شهر
+                  </TableCell>
+                  <TableCell className="py-4 px-5 text-right text-gray-700 font-semibold">
+                    {pkg.liquidAmount.toLocaleString("ar-SA")} ريال
+                  </TableCell>
+                  <TableCell className="py-4 px-5 text-right text-gray-500 text-sm">
+                    يُحدد بعد الطلب
+                  </TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </div>
 
-          {/* Mobile Cards — hidden on desktop */}
-          <div className="flex flex-col gap-4 md:hidden">
-            {allPackages.map((row) => {
-              const isCurrentPackage = row.id === id;
-              return (
-                <div
-                  key={row.id}
-                  className={`w-full rounded-2xl border-2 bg-white p-5 ${
-                    isCurrentPackage
-                      ? "border-blue-500 shadow-md"
-                      : "border-blue-100 shadow-sm"
-                  }`}
-                >
-                  <div className="flex items-center gap-2 mb-4 pb-3 border-b border-blue-100">
-                    <span className="text-lg font-black text-blue-600">{row.name}</span>
-                    {isCurrentPackage && (
-                      <span className="text-xs bg-blue-600 text-white px-2 py-0.5 rounded-full font-bold">
-                        الباقة المختارة
-                      </span>
-                    )}
-                  </div>
-                  <div className="space-y-3">
-                    <div>
-                      <p className="text-gray-500 text-sm mb-0.5">الدفعة الأولى والقسط الشهري</p>
-                      <p className="text-gray-900 font-bold text-base leading-snug">
-                        دفعة أولى {row.firstPayment.toLocaleString("ar-SA")} ريال + قسط{" "}
-                        {row.monthlyPayment.toLocaleString("ar-SA")} ريال / شهر
-                      </p>
-                    </div>
-                    <div className="border-t border-gray-100 pt-3">
-                      <p className="text-gray-500 text-sm mb-0.5">المبلغ الصافي بعد خصم الرسوم</p>
-                      <p className="text-gray-900 font-bold text-base">
-                        {row.liquid.toLocaleString("ar-SA")} ريال
-                      </p>
-                    </div>
-                    <div className="border-t border-gray-100 pt-3">
-                      <p className="text-gray-500 text-sm mb-0.5">المبلغ النازل في حساب العميل</p>
-                      <p className="text-gray-900 font-bold text-base">يُحدد بعد الطلب</p>
-                    </div>
-                  </div>
+          {/* Mobile Card — single card for current package only, hidden on desktop */}
+          <div className="md:hidden">
+            <div className="w-full rounded-2xl border-2 border-blue-500 bg-white p-5 shadow-md">
+              <div className="mb-4 pb-3 border-b border-blue-100">
+                <span className="text-lg font-black text-blue-600">{pkg.name}</span>
+              </div>
+              <div className="space-y-3">
+                <div>
+                  <p className="text-gray-500 text-sm mb-0.5">الدفعة الأولى والقسط الشهري</p>
+                  <p className="text-gray-900 font-bold text-base leading-snug">
+                    دفعة أولى {pkg.firstPayment.toLocaleString("ar-SA")} ريال + قسط{" "}
+                    {pkg.monthlyPayment.toLocaleString("ar-SA")} ريال / شهر
+                  </p>
                 </div>
-              );
-            })}
+                <div className="border-t border-gray-100 pt-3">
+                  <p className="text-gray-500 text-sm mb-0.5">المبلغ الصافي بعد خصم الرسوم وإعادة البيع والأتعاب</p>
+                  <p className="text-gray-900 font-bold text-base">
+                    {pkg.liquidAmount.toLocaleString("ar-SA")} ريال
+                  </p>
+                </div>
+                <div className="border-t border-gray-100 pt-3">
+                  <p className="text-gray-500 text-sm mb-0.5">المبلغ النازل في حساب العميل عند دفع الدفعة الأولى</p>
+                  <p className="text-gray-900 font-bold text-base">يُحدد بعد الطلب</p>
+                </div>
+              </div>
+            </div>
           </div>
         </motion.div>
 
