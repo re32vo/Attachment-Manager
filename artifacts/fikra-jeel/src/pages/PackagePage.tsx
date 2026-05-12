@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, useParams } from "wouter";
 import { motion } from "framer-motion";
 import { AlertTriangle, ChevronRight } from "lucide-react";
@@ -80,6 +81,10 @@ export default function PackagePage() {
   const { id } = useParams<{ id: string }>();
   const pkg = packagesData[id ?? ""];
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [id]);
+
   if (!pkg) {
     return (
       <Layout>
@@ -160,22 +165,10 @@ export default function PackagePage() {
                   <span className="text-base font-bold text-blue-500">ريال</span>
                 </span>
               </div>
-              <div className="flex justify-between items-center py-2 border-b border-blue-100">
+              <div className="flex justify-between items-center pt-2">
                 <span className="text-gray-600 text-sm">مبلغ السيولة</span>
                 <span className="text-lg font-bold text-gray-800">
                   {pkg.liquidAmount.toLocaleString("ar-SA")} ريال
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-2 border-b border-blue-100">
-                <span className="text-gray-600 text-sm">الدفعة الأولى</span>
-                <span className="text-lg font-bold text-gray-800">
-                  {pkg.firstPayment.toLocaleString("ar-SA")} ريال
-                </span>
-              </div>
-              <div className="flex justify-between items-center pt-2">
-                <span className="text-gray-600 text-sm">القسط الشهري</span>
-                <span className="text-lg font-bold text-gray-800">
-                  {pkg.monthlyPayment.toLocaleString("ar-SA")} ريال / شهر
                 </span>
               </div>
             </div>
@@ -233,16 +226,16 @@ export default function PackagePage() {
               <TableHeader>
                 <TableRow className="bg-blue-600 hover:bg-blue-600">
                   <TableHead className="text-white font-bold text-right py-4 px-5">
-                    الباقة المتوفرة
+                    الباقات المتوفرة
                   </TableHead>
                   <TableHead className="text-white font-bold text-right py-4 px-5">
-                    الدفعة الأولى والقسط الشهري
+                    الدفعة الأولى
                   </TableHead>
                   <TableHead className="text-white font-bold text-right py-4 px-5">
-                    المبلغ الصافي بعد خصم الرسوم وإعادة البيع والأتعاب
+                    المبلغ الصافي لك
                   </TableHead>
                   <TableHead className="text-white font-bold text-right py-4 px-5">
-                    المبلغ النازل في حساب العميل عند دفع الدفعة الأولى
+                    المبلغ النازل في حساب العميل في حال دفعه قيمة الدفعة الأولى
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -251,9 +244,8 @@ export default function PackagePage() {
                   <TableCell className="py-4 px-5 text-right font-bold text-blue-700">
                     {pkg.name}
                   </TableCell>
-                  <TableCell className="py-4 px-5 text-right text-gray-700 text-sm">
-                    دفعة أولى {pkg.firstPayment.toLocaleString("ar-SA")} ريال + قسط{" "}
-                    {pkg.monthlyPayment.toLocaleString("ar-SA")} ريال / شهر
+                  <TableCell className="py-4 px-5 text-right text-gray-700 font-semibold">
+                    {pkg.firstPayment.toLocaleString("ar-SA")} ريال
                   </TableCell>
                   <TableCell className="py-4 px-5 text-right text-gray-700 font-semibold">
                     {pkg.liquidAmount.toLocaleString("ar-SA")} ريال
@@ -274,20 +266,19 @@ export default function PackagePage() {
               </div>
               <div className="space-y-3">
                 <div>
-                  <p className="text-gray-500 text-sm mb-0.5">الدفعة الأولى والقسط الشهري</p>
+                  <p className="text-gray-500 text-sm mb-0.5">الدفعة الأولى</p>
                   <p className="text-gray-900 font-bold text-base leading-snug">
-                    دفعة أولى {pkg.firstPayment.toLocaleString("ar-SA")} ريال + قسط{" "}
-                    {pkg.monthlyPayment.toLocaleString("ar-SA")} ريال / شهر
+                    {pkg.firstPayment.toLocaleString("ar-SA")} ريال
                   </p>
                 </div>
                 <div className="border-t border-gray-100 pt-3">
-                  <p className="text-gray-500 text-sm mb-0.5">المبلغ الصافي بعد خصم الرسوم وإعادة البيع والأتعاب</p>
+                  <p className="text-gray-500 text-sm mb-0.5">المبلغ الصافي لك</p>
                   <p className="text-gray-900 font-bold text-base">
                     {pkg.liquidAmount.toLocaleString("ar-SA")} ريال
                   </p>
                 </div>
                 <div className="border-t border-gray-100 pt-3">
-                  <p className="text-gray-500 text-sm mb-0.5">المبلغ النازل في حساب العميل عند دفع الدفعة الأولى</p>
+                  <p className="text-gray-500 text-sm mb-0.5">المبلغ النازل في حساب العميل في حال دفعه قيمة الدفعة الأولى</p>
                   <p className="text-gray-900 font-bold text-base">يُحدد بعد الطلب</p>
                 </div>
               </div>
