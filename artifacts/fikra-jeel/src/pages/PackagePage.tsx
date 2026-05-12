@@ -210,7 +210,9 @@ export default function PackagePage() {
           <h3 className="text-xl font-black text-gray-900 mb-5">
             جدول التقسيط على 4 دفعات شهرية
           </h3>
-          <div className="overflow-x-auto rounded-2xl border border-gray-100 shadow-sm">
+
+          {/* Desktop Table — hidden on mobile */}
+          <div className="hidden md:block overflow-x-auto rounded-2xl border border-gray-100 shadow-sm">
             <Table>
               <TableHeader>
                 <TableRow className="bg-blue-600 hover:bg-blue-600">
@@ -263,6 +265,54 @@ export default function PackagePage() {
                 })}
               </TableBody>
             </Table>
+          </div>
+
+          {/* Mobile Cards — hidden on desktop */}
+          <div className="flex flex-col gap-4 md:hidden">
+            {allPackages.map((row) => {
+              const isCurrentPackage = row.id === id;
+              return (
+                <div
+                  key={row.id}
+                  className={`w-full rounded-2xl border-2 bg-white p-5 ${
+                    isCurrentPackage
+                      ? "border-blue-500 shadow-md"
+                      : "border-blue-100 shadow-sm"
+                  }`}
+                >
+                  {/* Card title row */}
+                  <div className="flex items-center gap-2 mb-4 pb-3 border-b border-blue-100">
+                    <span className="text-lg font-black text-blue-600">{row.name}</span>
+                    {isCurrentPackage && (
+                      <span className="text-xs bg-blue-600 text-white px-2 py-0.5 rounded-full font-bold">
+                        الباقة المختارة
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Card rows */}
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-gray-500 text-sm mb-0.5">الدفعة الأولى والقسط الشهري</p>
+                      <p className="text-gray-900 font-bold text-base leading-snug">
+                        دفعة أولى {row.firstPayment.toLocaleString("ar-SA")} ريال + قسط{" "}
+                        {row.monthlyPayment.toLocaleString("ar-SA")} ريال / شهر
+                      </p>
+                    </div>
+                    <div className="border-t border-gray-100 pt-3">
+                      <p className="text-gray-500 text-sm mb-0.5">المبلغ الصافي بعد خصم الرسوم</p>
+                      <p className="text-gray-900 font-bold text-base">
+                        {row.liquid.toLocaleString("ar-SA")} ريال
+                      </p>
+                    </div>
+                    <div className="border-t border-gray-100 pt-3">
+                      <p className="text-gray-500 text-sm mb-0.5">المبلغ النازل في حساب العميل</p>
+                      <p className="text-gray-900 font-bold text-base">يُحدد بعد الطلب</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </motion.div>
 
