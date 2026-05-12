@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "فكره جيل"
+version = "1.0.0"
+id = "artifacts/fikra-jeel"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21356
+
+[services.development]
+run = "pnpm --filter @workspace/fikra-jeel run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/fikra-jeel", "run", "build" ]
+publicDir = "artifacts/fikra-jeel/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21356"
+BASE_PATH = "/"
