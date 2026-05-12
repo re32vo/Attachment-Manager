@@ -1,6 +1,27 @@
+import { Link, useLocation } from "wouter";
 import { Zap, ExternalLink } from "lucide-react";
 
 export default function Footer() {
+  const [, setLocation] = useLocation();
+
+  const scrollToSection = (e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    if (href === "#top") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const el = document.querySelector(href);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      setLocation("/");
+      setTimeout(() => {
+        const target = document.querySelector(href);
+        if (target) target.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+    }
+  };
+
   return (
     <footer
       id="footer"
@@ -37,12 +58,7 @@ export default function Footer() {
                   <a
                     href={link.href}
                     className="text-gray-400 hover:text-blue-400 text-sm transition-colors"
-                    onClick={(e) => {
-                      if (link.href === "#top") {
-                        e.preventDefault();
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                      }
-                    }}
+                    onClick={(e) => scrollToSection(e, link.href)}
                   >
                     {link.label}
                   </a>
@@ -57,21 +73,29 @@ export default function Footer() {
               السياسات
             </h3>
             <ul className="space-y-3">
-              {/* TODO: Update these links with actual policy pages */}
               <li>
-                <a href="#" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">
+                <Link
+                  href="/privacy"
+                  className="text-gray-400 hover:text-blue-400 text-sm transition-colors"
+                >
                   سياسة الخصوصية
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">
+                <Link
+                  href="/terms"
+                  className="text-gray-400 hover:text-blue-400 text-sm transition-colors"
+                >
                   الشروط والأحكام
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">
+                <Link
+                  href="/refund"
+                  className="text-gray-400 hover:text-blue-400 text-sm transition-colors"
+                >
                   سياسة الاستبدال والاسترجاع
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
